@@ -228,21 +228,20 @@ ggplot(user_hour, aes(hour, total, color=user_type, group=user_type)) +
   scale_y_continuous(labels=comma) +
   theme(legend.title=element_blank())
 
-# Rides by User Type, Weekday vs Weekend
+# Rides by User Type Grouped by Day of Week
 
 user_wday <- df %>%
-  group_by(user_type, weekend) %>%
+  group_by(user_type, dayofweek) %>%
   summarize(total=n())
 
-ggplot(user_wday, aes(weekend, total, fill=weekend)) +
+ggplot(user_wday, aes(dayofweek, total, fill=dayofweek)) +
   geom_bar(stat="identity") +
-  labs(title="Divvy Rides, Grouped by Weekday vs Weekend",
+  labs(title="Divvy Rides Grouped by Day of Week",
        subtitle="Faceted by User Type", x="", y="Total Rides") +
   facet_grid(cols=vars(user_type)) +
   scale_y_continuous(labels=comma) +
-  scale_x_discrete(labels=c("Weekday", "Weekend")) +
-  scale_fill_manual(labels=c("Weekday", "Weekend"),
-                    values=c("#00BFC4", "#F8766D")) +
+  scale_x_discrete(labels=c("Sun", "Mon", "Tue", "Wed",
+                            "Thu", "Fri", "Sat")) +
   theme(legend.position="none")
 
 # Rides by Hour and Gender
@@ -283,8 +282,8 @@ rides_day <- df %>%
 
 ggplot(rides_day, aes(dayofyear, total)) +
   geom_line(color="darkblue") +
-  labs(title="Divvy Rides Every Day", caption="Data Source: Divvy 2014",
-       x="Day", y="Total Rides") +
+  labs(title="Divvy Rides per Day", caption="Data Source: Divvy 2014",
+       x="Day", y="Rides per Day") +
   scale_x_continuous(breaks=c(0, 32, 60, 91, 121, 152),
                      labels=c("January 1", "February 1", "March 1",
                               "April 1", "May 1", "June 1")) +
